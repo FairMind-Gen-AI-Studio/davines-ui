@@ -1,0 +1,395 @@
+.upload-container {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  margin-top: 16px;
+  width: 100%;
+}
+
+.dropzone {
+  border: 2px dashed #cccccc;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border 0.3s ease-in-out;
+}
+
+.dropzone.active {
+  border-color: #2196f3;
+}
+
+.dropzone p {
+  margin: 0;
+}
+
+.batch-progress {
+  margin-top: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #2196f3;
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+  transition: width 0.3s ease-in-out;
+  animation: progress-bar-stripes 1s linear infinite;
+}
+
+.progress-fill.completed {
+  background-color: #28a745;
+  background-image: none;
+  animation: none;
+}
+
+@keyframes progress-bar-stripes {
+  0% {
+    background-position: 1rem 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.current-files {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.file-status {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
+  background: #f8f9fa;
+}
+
+.file-status p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  background: #e9ecef;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.9em;
+  margin-top: 5px !important;
+}
+
+.file-status.completed {
+  background: #d4edda;
+}
+
+.file-status.processing {
+  background: #cce5ff;
+}
+
+.file-status.error {
+  background: #f8d7da;
+}
+
+.process-button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.process-button:hover {
+  background-color: #1976d2;
+}
+
+.process-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: white;
+  border-bottom: 1px solid #e5e5e5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 48px;
+}
+
+.logo-container {
+  margin-right: 16px;
+}
+
+.logo {
+  height: 24px;
+  width: auto;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.App {
+  padding-top: 56px;
+  background-color: #f9f9f9;
+}
+
+.active-batches {
+  padding: 24px;
+  max-width: 800px;
+  margin: 16px auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.active-batches h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.batch-container {
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.batch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.batch-header h4 {
+  margin: 0;
+  color: #1976d2;
+  font-size: 1rem;
+}
+
+.file-count {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.batch-container:last-child {
+  margin-bottom: 0;
+}
+
+.active-batches-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.system-status {
+  display: flex;
+  gap: 16px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.batch-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.batch-stats {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  font-size: 0.9rem;
+  color: #666;
+  margin-right: 16px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.queued {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.status-badge.processing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.file-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.file-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.batch-errors {
+  margin: 12px 0;
+  padding: 12px;
+  background-color: #fff3f3;
+  border-radius: 4px;
+}
+
+.batch-errors h5 {
+  color: #dc3545;
+  margin: 0 0 8px 0;
+}
+
+.batch-errors ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #dc3545;
+}
+
+.progress-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.progress-stats p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.batch-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.overall-progress h5 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.file-progress {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-progress .progress-bar {
+  flex: 1;
+  height: 12px;
+}
+
+.progress-text {
+  min-width: 45px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.file-status {
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 6px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.file-status.completed {
+  background: #f8fff9;
+  border-color: #d4edda;
+}
+
+.file-status.processing {
+  background: #f8fbff;
+  border-color: #cce5ff;
+}
+
+.file-status.error {
+  background: #fff8f8;
+  border-color: #f8d7da;
+}
+
+.file-details .process-button {
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  margin-left: auto;
+}
+ 
