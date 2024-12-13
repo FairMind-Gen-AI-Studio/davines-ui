@@ -16,7 +16,7 @@ export function BatchProgress({ batchId }) {
 
         if (batchId) {
             fetchProgress();
-            const interval = setInterval(fetchProgress, 2000);
+            const interval = setInterval(fetchProgress, 5000); // Fetch every 5 seconds
             return () => clearInterval(interval);
         }
     }, [batchId]);

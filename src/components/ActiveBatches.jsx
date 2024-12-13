@@ -39,7 +39,9 @@ export function ActiveBatches() {
         const fetchActiveBatches = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/active-batches`);
+                
                 const data = await response.json();
+                
                 setActiveBatches(data);
             } catch (error) {
                 console.error('Failed to fetch active batches:', error);
@@ -47,7 +49,7 @@ export function ActiveBatches() {
         };
 
         fetchActiveBatches();
-        const interval = setInterval(fetchActiveBatches, 2000);
+        const interval = setInterval(fetchActiveBatches, 60000); // Fetch every minute
         return () => clearInterval(interval);
     }, []);
 
@@ -91,13 +93,12 @@ export function ActiveBatches() {
                             </button>
                         </div>
                     </div>
-
                     {batch.errors.error_count > 0 && (
                         <div className="batch-errors">
                             <h5>Errors ({batch.errors.error_count}):</h5>
                             <ul>
                                 {batch.errors.error_details.map((error, index) => (
-                                    <li key={index}>{error}</li>
+                                    <li key={index}>{error.error} - {error.file}</li>
                                 ))}
                             </ul>
                         </div>

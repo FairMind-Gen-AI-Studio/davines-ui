@@ -44,26 +44,6 @@ export function FileUpload() {
             }));
         }
     }, []);
-    /*
-        const startProcessing = async () => {
-            if (!uploadStatus.batchId) return;
-    
-            try {
-                setUploadStatus(prev => ({ ...prev, isProcessing: true }));
-                await fetch(`${process.env.REACT_APP_API_URL}/process-batch/${uploadStatus.batchId}`, {
-                    method: 'POST'
-                });
-            } catch (error) {
-                console.error('Failed to start processing:', error);
-                setUploadStatus(prev => ({
-                    ...prev,
-                    failedFiles: {
-                        ...prev.failedFiles,
-                        'process_error': 'Failed to start processing: ' + error.message
-                    }
-                }));
-            }
-        };*/
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -103,26 +83,12 @@ export function FileUpload() {
                         <h4>Failed uploads:</h4>
                         <ul>
                             {Object.entries(uploadStatus.failedFiles).map(([file, error]) => (
-                                <li key={file}>{file}: {error}</li>
+                                <li key={file.toString()}>{file.toString()}: {error.toString()}</li>
                             ))}
                         </ul>
                     </div>
                 )}
 
-                {/*uploadStatus.batchId && (
-                <>
-                    <p>Batch ID: {uploadStatus.batchId}</p>
-                    {!uploadStatus.isProcessing && (
-                        <button
-                            onClick={startProcessing}
-                            className="process-button"
-                        >
-                            Start Processing
-                        </button>
-                    )}
-                    <BatchProgress batchId={uploadStatus.batchId} />
-                </>
-            )*/}
             </div>
         </section>
     );
