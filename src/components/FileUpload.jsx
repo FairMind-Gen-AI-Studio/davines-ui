@@ -68,7 +68,7 @@ export function FileUpload() {
                 {uploadStatus.isUploading && <p>Uploading...</p>}
 
                 {uploadStatus.successFiles.length > 0 && (
-                    <div>
+                    <div id="success-files">
                         <h4>Successfully uploaded:</h4>
                         <ul>
                             {uploadStatus.successFiles.map(file => (
@@ -79,7 +79,7 @@ export function FileUpload() {
                 )}
 
                 {Object.keys(uploadStatus.failedFiles).length > 0 && (
-                    <div>
+                    <div id="failed-files">
                         <h4>Failed uploads:</h4>
                         <ul>
                             {Object.entries(uploadStatus.failedFiles).map(([file, error]) => (

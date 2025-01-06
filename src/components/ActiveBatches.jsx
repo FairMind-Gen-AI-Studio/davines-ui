@@ -41,6 +41,14 @@ export function ActiveBatches() {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/active-batches`);
                 
                 const data = await response.json();
+                console.log(data);
+                if (data.total_batches > 0) {
+                
+                const successFilesDiv = document.getElementById('success-files');
+                if (successFilesDiv) {
+                    successFilesDiv.style.display = 'none';
+                }
+                }
                 
                 setActiveBatches(data);
             } catch (error) {
@@ -49,7 +57,7 @@ export function ActiveBatches() {
         };
 
         fetchActiveBatches();
-        const interval = setInterval(fetchActiveBatches, 60000); // Fetch every minute
+        const interval = setInterval(fetchActiveBatches, 5000); // Fetch every 5 seconds
         return () => clearInterval(interval);
     }, []);
 

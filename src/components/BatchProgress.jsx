@@ -8,6 +8,7 @@ export function BatchProgress({ batchId }) {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/batch-status/${batchId}`);
                 const data = await response.json();
+                //console.log(data);
                 setDetails(data);
             } catch (error) {
                 console.error('Failed to fetch batch progress:', error);
@@ -16,7 +17,7 @@ export function BatchProgress({ batchId }) {
 
         if (batchId) {
             fetchProgress();
-            const interval = setInterval(fetchProgress, 5000); // Fetch every 5 seconds
+            const interval = setInterval(fetchProgress, 1000); // Fetch every 5 seconds
             return () => clearInterval(interval);
         }
     }, [batchId]);

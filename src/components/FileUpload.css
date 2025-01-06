@@ -141,6 +141,7 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 8px 16px;
   background-color: white;
   border-bottom: 1px solid #e5e5e5;
@@ -153,7 +154,17 @@
 }
 
 .logo-container {
+  display: flex;
+  flex: 1;
   margin-right: 16px;
+}
+
+.logo-container:first-child {
+  justify-content: flex-start;
+}
+
+.logo-container:last-child {
+  justify-content: flex-end;
 }
 
 .logo {
@@ -163,6 +174,8 @@
 
 .header h1 {
   font-size: 1.2rem;
+  flex: 2;
+  text-align: center;
   margin: 0;
 }
 
@@ -392,4 +405,3 @@
   font-size: 0.8rem;
   margin-left: auto;
 }
- 
