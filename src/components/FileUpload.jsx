@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-//import { BatchProgress } from './BatchProgress';
+import './FileUpload.css';
 
 export function FileUpload() {
     const [uploadStatus, setUploadStatus] = useState({
