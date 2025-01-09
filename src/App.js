@@ -8,9 +8,9 @@ import '@aws-amplify/ui-react/styles.css';
 Amplify.configure({
   Auth: {
     Cognito: {
-      userPoolId: "eu-north-1_yYMMQDST0",
-      userPoolClientId: "27k3sbfkdidhd765e3vgqnc0ic",
-      identityPoolId: "eu-north-1:744ae481-84f1-4dec-bc69-0ad36c443940"
+      userPoolId: "eu-central-1_hvefWKI1S",
+      userPoolClientId: "4pqp5ilnifph26ctveg78oc7kk",
+      identityPoolId: "eu-central-1:0f9f60e7-da4a-4bfd-8857-2743a3be9de4"
     },
   },
 })
