@@ -4,6 +4,7 @@ import { FileUpload } from './components/FileUpload';
 import { ActiveBatches } from './components/ActiveBatches';
 import Header from './components/Header';
 import '@aws-amplify/ui-react/styles.css';
+import './App.css';
 
 Amplify.configure({
   Auth: {
@@ -24,7 +25,9 @@ function App() {
           <Authenticator hideSignUp={true}>
             {({ signOut, user }) => (
               <div>
-                <Button onClick={signOut}>Sign out</Button>
+                <div className="sign-out-button">
+                  <Button onClick={signOut}>Sign out</Button>
+                </div>
                 <FileUpload />
                 <ActiveBatches />
               </div>

@@ -405,3 +405,25 @@
   font-size: 0.8rem;
   margin-left: auto;
 }
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: white;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  max-width: 800px;
+  width: 100%;
+  position: fixed;
+}
+
+.sign-out-button {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
