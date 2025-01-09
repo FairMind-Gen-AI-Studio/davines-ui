@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for a static website hosted on S3 with CloudFront, using Origin Access Control.
+
+Parameters:
+  Stage:
+    Type: String
+    Description: Deployment stage (e.g., dev, staging, prod)
+    AllowedPattern: ^[a-zA-Z0-9]+$
+    ConstraintDescription: Stage must contain only alphanumeric characters.
+  DomainName:
+    Type: String
+    Description: Custom domain name for the CloudFront distribution (e.g., promos.fairmind.ai)
+
+Resources:
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "fm-davines-ui-${Stage}"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  CloudFrontOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "OAC for fm-davines-ui-${Stage}"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: 's3:GetObject'
+            Resource: !Sub "${WebsiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        PriceClass: PriceClass_100
+        Comment: !Sub "Davines Ui Distribution ${DomainName}"
+        HttpVersion: http2
+        Origins:
+          - DomainName: !GetAtt WebsiteBucket.RegionalDomainName
+            Id: S3Origin
+            S3OriginConfig: {}
+            OriginAccessControlId: !Ref CloudFrontOriginAccessControl
+        DefaultCacheBehavior:
+          MinTTL: 0
+          DefaultTTL: 300
+          MaxTTL: 1200
+          Compress: true
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+            Headers:
+              - Origin
+              - Access-Control-Request-Headers
+              - Access-Control-Request-Method
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+        Enabled: true
+        DefaultRootObject: index.html
+        Aliases:
+          - !Ref DomainName
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:396913700626:certificate/9263e107-d8fb-495c-a794-079fa95a5e42
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html   
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+
+  CloudFrontRecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: davines.fairmind.ai.  
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z0651107143TMSN8FPDDD
+
+Outputs:
+  CustomDomainURL:
+    Description: Custom domain URL
+    Value: !Sub "https://${DomainName}"
+  BucketName:
+    Description: Name of the S3 bucket
+    Value: !Ref WebsiteBucket
+  CloudFrontDistributionId:
+    Description: ID of the CloudFront Distribution
+    Value: !Ref CloudFrontDistribution

@@ -1,0 +1,86 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ dev, main ]
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: "npm"
+          cache-dependency-path: ./davines-ui/package-lock.json
+        
+      - name: Set AWS Account from branch name
+        run: |
+          if [[ "${{ github.ref_name }}" == "dev" ]]; then
+            echo "awsAccount=${{ secrets.AWS_DAVINES_DEV_ACCOUNT }}" >> $GITHUB_ENV
+            echo "stage=dev" >> $GITHUB_ENV
+            echo "domain=dev.davines.fairmind.ai" >> $GITHUB_ENV
+            echo "REACT_APP_API_URL=api.dev.davines.fairmind.ai" >> $GITHUB_ENV
+          elif [[ "${{ github.ref_name  }}" == "main" ]]; then
+            echo "awsAccount=${{ secrets.AWS_PROMOS_PROD_ACCOUNT }}" >> $GITHUB_ENV
+            echo "stage=prod" >> $GITHUB_ENV
+            echo "domain=davines.fairmind.ai" >> $GITHUB_ENV
+            echo "REACT_APP_API_URL=api.davines.fairmind.ai" >> $GITHUB_ENV
+          else
+            echo "Unsupported branch for deploying. Exiting."
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./davines-ui
+        
+      - name: Build React app
+        run: npm run build
+        working-directory: ./davines-ui
+  
+      # - name: Run tests
+      #   run: npm test -- --passWithNoTests
+      #   working-directory: ./promos-ui  
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ env.awsAccount }}:role/GithubActionsDeploymentRole
+          aws-region: eu-central-1
+
+      - name: Validate CloudFormation template
+        run: |
+          aws cloudformation validate-template --template-body file://template.yaml
+
+      - name: Deploy CloudFormation stack
+        run: |
+          aws cloudformation deploy \
+            --template-file template.yaml \
+            --stack-name fm-davines-ui-${{ env.stage }} \
+            --parameter-overrides Stage=${{ env.stage }} DomainName=${{ env.domain }} \
+            --capabilities CAPABILITY_IAM
+
+      - name: Copy built files to S3
+        run: |
+          aws s3 sync ./davines-ui/build s3://fm-davines-ui-${{ env.stage }} --delete
+
+      - name: Invalidate CloudFront cache
+        run: |
+          DISTRIBUTION_ID=$(aws cloudformation describe-stacks --stack-name fm-davines-ui-${{ env.stage }} --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
+          aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+
+      - name: Get CloudFront URL
+        run: |
+          CUSTOM_URL=$(aws cloudformation describe-stacks --stack-name fm-davines-ui-${{ env.stage }} --query "Stacks[0].Outputs[?OutputKey=='CustomDomainURL'].OutputValue" --output text)
+          echo "Custom Domain URL: $CUSTOM_URL"
