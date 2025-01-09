@@ -29,12 +29,12 @@ jobs:
           if [[ "${{ github.ref_name }}" == "dev" ]]; then
             echo "awsAccount=${{ secrets.AWS_DAVINES_DEV_ACCOUNT }}" >> $GITHUB_ENV
             echo "stage=dev" >> $GITHUB_ENV
-            echo "domain=dev.davines.fairmind.ai" >> $GITHUB_ENV
-            echo "REACT_APP_API_URL=dev.api.davines.fairmind.ai" >> $GITHUB_ENV
+            echo "domain=dev.app.davines.fairmind.ai" >> $GITHUB_ENV
+            echo "REACT_APP_API_URL=api.dev.davines.fairmind.ai" >> $GITHUB_ENV
           elif [[ "${{ github.ref_name  }}" == "main" ]]; then
             echo "awsAccount=${{ secrets.AWS_DAVINES_PROD_ACCOUNT }}" >> $GITHUB_ENV
             echo "stage=prod" >> $GITHUB_ENV
-            echo "domain=davines.fairmind.ai" >> $GITHUB_ENV
+            echo "domain=app.davines.fairmind.ai" >> $GITHUB_ENV
             echo "REACT_APP_API_URL=api.davines.fairmind.ai" >> $GITHUB_ENV
           else
             echo "Unsupported branch for deploying. Exiting."
@@ -43,15 +43,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: ./davines-ui
         
       - name: Build React app
         run: npm run build
-        working-directory: ./davines-ui
   
       # - name: Run tests
       #   run: npm test -- --passWithNoTests
-      #   working-directory: ./davines-ui  
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -73,7 +70,7 @@ jobs:
 
       - name: Copy built files to S3
         run: |
-          aws s3 sync ./davines-ui/build s3://fm-davines-ui-${{ env.stage }} --delete
+          aws s3 sync ./build s3://fm-davines-ui-${{ env.stage }} --delete
 
       - name: Invalidate CloudFront cache
         run: |
