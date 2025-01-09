@@ -9,7 +9,7 @@ Parameters:
     ConstraintDescription: Stage must contain only alphanumeric characters.
   DomainName:
     Type: String
-    Description: Custom domain name for the CloudFront distribution (e.g., promos.fairmind.ai)
+    Description: Custom domain name for the CloudFront distribution (e.g., davines.fairmind.ai)
 
 Resources:
   WebsiteBucket:
