@@ -21,7 +21,7 @@ function App() {
     <div className="App">
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Header />
-        <div className="w-full max-w-md pt-16">
+        <div className="content w-full max-w-md pt-16">
           <Authenticator hideSignUp={true}>
             {({ signOut, user }) => (
               <div>

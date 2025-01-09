@@ -54,7 +54,7 @@ export function FileUpload() {
     });
 
     return (
-        <section className="centered-content" style={{ height: '20vh' }}>
+        <section className="centered-content" style={{ height: '20vh', width: '80vw' }}>
             <div className="upload-container">
                 <div {...getRootProps()} className={`dropzone ${isDragActive ? 'active' : ''}`}>
                     <input {...getInputProps()} />
