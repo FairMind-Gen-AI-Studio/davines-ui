@@ -35,7 +35,7 @@ jobs:
             echo "awsAccount=${{ secrets.AWS_DAVINES_PROD_ACCOUNT }}" >> $GITHUB_ENV
             echo "stage=prod" >> $GITHUB_ENV
             echo "domain=app.davines.fairmind.ai" >> $GITHUB_ENV
-            echo "REACT_APP_API_URL=api.davines.fairmind.ai" >> $GITHUB_ENV
+            echo "REACT_APP_API_URL=https://api.davines.fairmind.ai" >> $GITHUB_ENV
           else
             echo "Unsupported branch for deploying. Exiting."
             exit 1
