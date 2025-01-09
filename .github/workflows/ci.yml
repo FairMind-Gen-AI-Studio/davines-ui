@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 20.x
           cache: "npm"
-          cache-dependency-path: ./davines-ui/package-lock.json
+          cache-dependency-path: ./package-lock.json
         
       - name: Set AWS Account from branch name
         run: |
