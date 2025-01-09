@@ -30,9 +30,9 @@ jobs:
             echo "awsAccount=${{ secrets.AWS_DAVINES_DEV_ACCOUNT }}" >> $GITHUB_ENV
             echo "stage=dev" >> $GITHUB_ENV
             echo "domain=dev.davines.fairmind.ai" >> $GITHUB_ENV
-            echo "REACT_APP_API_URL=api.dev.davines.fairmind.ai" >> $GITHUB_ENV
+            echo "REACT_APP_API_URL=dev.api.davines.fairmind.ai" >> $GITHUB_ENV
           elif [[ "${{ github.ref_name  }}" == "main" ]]; then
-            echo "awsAccount=${{ secrets.AWS_PROMOS_PROD_ACCOUNT }}" >> $GITHUB_ENV
+            echo "awsAccount=${{ secrets.AWS_DAVINES_PROD_ACCOUNT }}" >> $GITHUB_ENV
             echo "stage=prod" >> $GITHUB_ENV
             echo "domain=davines.fairmind.ai" >> $GITHUB_ENV
             echo "REACT_APP_API_URL=api.davines.fairmind.ai" >> $GITHUB_ENV
@@ -51,7 +51,7 @@ jobs:
   
       # - name: Run tests
       #   run: npm test -- --passWithNoTests
-      #   working-directory: ./promos-ui  
+      #   working-directory: ./davines-ui  
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
